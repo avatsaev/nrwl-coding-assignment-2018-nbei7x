@@ -1,0 +1,16 @@
+
+<div class="toolbar">
+  <button [routerLink]="['/tickets']">TICKETS INDEX</button>
+  <button (click)="toggleTicketForm()">CREATE TICKET</button>
+</div>
+
+<div *ngIf="displayTicketForm" class="ticket-form">
+  <app-ticket-form
+    [users]="users$ | async"
+    (cancel)="toggleTicketForm()"
+    (createTicket)="onTicketCreate($event)"
+  ></app-ticket-form>
+</div>
+
+
+<router-outlet></router-outlet>

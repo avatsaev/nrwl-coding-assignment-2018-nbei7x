@@ -1,0 +1,28 @@
+<form
+  (ngSubmit)="this.form.valid && users.length ? createTicket.emit(this.form.value) : null"
+  [formGroup]="form"
+>
+
+  <div class="form-field">
+    <label for="Description">Description:</label>
+    <input type="text" id="Description" required name="description" formControlName="description">
+  </div>
+  
+  
+  <div class="form-field">
+    <label for="assigneeId">Assignee:</label>
+    <select id="assigneeId" formControlName="assigneeId" name="assigneeId" >
+      <option
+        [ngValue]="u.id"
+        *ngFor="let u of users; let i = index; trackBy: usersTrackFn"
+      >
+        {{u.name}}
+      </option>
+    </select>
+  </div>
+
+  <button > Cancel</button>
+  <button [disabled]="!(this.form.valid && users.length)" type="submit"> Create</button>
+
+
+</form>

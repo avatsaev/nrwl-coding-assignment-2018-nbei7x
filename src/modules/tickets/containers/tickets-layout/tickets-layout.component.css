@@ -1,0 +1,11 @@
+.toolbar, .ticket-form{
+  padding: 5px;
+  border: #38393f 1px solid;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+
+button{
+  margin-right: 5px;
+}

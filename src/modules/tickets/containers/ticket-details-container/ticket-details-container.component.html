@@ -1,0 +1,6 @@
+<app-ticket-details
+  *ngIf="ticket$ | async as ticket; else isLoading"
+  [ticket]="ticket"
+  [user]="user$ | async"
+></app-ticket-details>
+<ng-template #isLoading> <p>LOADING...</p></ng-template>

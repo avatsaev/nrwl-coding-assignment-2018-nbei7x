@@ -1,0 +1,15 @@
+<div *ngIf="ticket" class="main-container">
+
+  <div class="info">
+    <input type="checkbox" [formControl]="completedControl"/>
+    <a [routerLink]="['/tickets', ticket.id]">{{ticket.description}}</a>
+  </div>
+
+  <div class="assignee">
+    <span>Assignee: </span>
+    <select [formControl]="assigneeControl">
+      <option [value]="u.id" *ngFor="let u of users; trackBy: usersTrackFn">{{u.name}}</option>
+    </select>
+  </div>
+
+</div>
