@@ -18,7 +18,7 @@ import {
 import {
   catchError,
   concatMap, exhaustMap,
-  map,
+  map, mergeMap,
   pluck,
   retry,
   switchMap,
@@ -58,7 +58,7 @@ export class TicketsEffects {
   create$ = createEffect(() => this.actions$.pipe(
     ofType(createTicket),
     pluck('ticket'),
-    exhaustMap(ticket => this.ticketsService.newTicket(ticket).pipe(
+    mergeMap(ticket => this.ticketsService.newTicket(ticket).pipe(
       map(ticket => createTicketSuccess({ticket})),
       catchError(err => of(createTicketFailure({err})))
     ))
