@@ -17,7 +17,7 @@ import {
 } from '../actions/tickets.actions';
 import {
   catchError,
-  concatMap, exhaustMap,
+  concatMap,
   map, mergeMap,
   pluck,
   retry,
