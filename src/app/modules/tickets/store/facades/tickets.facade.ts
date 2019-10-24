@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {select, Store} from '@ngrx/store';
+import {createSelector, select, Store} from '@ngrx/store';
 import {
   createTicket,
   loadAllTickets,
@@ -12,6 +12,8 @@ import {Observable} from 'rxjs';
 import {Ticket} from '../../models/ticket';
 import * as fromTickets from '../reducers';
 import {State} from '../reducers/tickets.reducer';
+import {UsersFacade} from '../../../../store/users/users.facade';
+import {map, skipWhile, switchMap} from 'rxjs/operators';
 
 @Injectable()
 export class TicketsFacade {
@@ -36,7 +38,7 @@ export class TicketsFacade {
     select(fromTickets.selectTotalTickets)
   );
 
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>, private usersFacade: UsersFacade) {}
 
   loadAll() {
     this.store.dispatch(loadAllTickets());
@@ -62,6 +64,16 @@ export class TicketsFacade {
     return this.store.pipe(
       select(fromTickets.selectTicketById(id))
     );
+  }
+
+  getTicketWithUser(id:number) {
+    return this.store.pipe(
+      select(fromTickets.selectTicketById(id)),
+      skipWhile(ticket => !ticket),
+      switchMap(t => this.usersFacade.getUserById(t.assigneeId).pipe(
+        map(user => ({...t, user}))
+      ))
+    )
   }
 
   createTicket(ticket: Partial<Ticket>) {

@@ -2,10 +2,9 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Ticket} from '../../models/ticket';
-import {User} from '../../../../models/user';
 import {UsersFacade} from '../../../../store/users/users.facade';
 import {TicketsFacade} from '../../store/facades/tickets.facade';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-details-container',
@@ -16,7 +15,6 @@ import {filter, map, switchMap, tap} from 'rxjs/operators';
 export class TicketDetailsContainerComponent implements OnInit {
 
   ticket$: Observable<Ticket>;
-  user$: Observable<User>;
 
   constructor(
       private route: ActivatedRoute,
@@ -28,13 +26,8 @@ export class TicketDetailsContainerComponent implements OnInit {
     this.ticket$ = this.route.params.pipe(
       map(params => +params.id),
       tap(id => this.ticketsFacade.loadTicket(id)),
-      switchMap(id => this.ticketsFacade.getTicketById(id))
-    );
-
-    this.user$ = this.ticket$.pipe(
-      tap(ticket => this.usersFacade.loadUser(ticket.assigneeId)),
-      filter(ticket => !!ticket),
-      switchMap(ticket => this.usersFacade.getUserById(ticket.assigneeId))
+      switchMap(id => this.ticketsFacade.getTicketWithUser(id)),
+      tap(ticket => this.usersFacade.getUserById(ticket.assigneeId))
     );
   }
 
