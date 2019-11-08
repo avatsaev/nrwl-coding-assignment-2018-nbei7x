@@ -68,11 +68,7 @@ export class TicketsFacade {
 
   getTicketWithUser(id:number) {
     return this.store.pipe(
-      select(fromTickets.selectTicketById(id)),
-      skipWhile(ticket => !ticket),
-      switchMap(t => this.usersFacade.getUserById(t.assigneeId).pipe(
-        map(user => ({...t, user}))
-      ))
+      select(fromTickets.selectTicketWithUserById(id))
     )
   }
 

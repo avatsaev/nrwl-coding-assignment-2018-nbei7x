@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Ticket} from '../../models/ticket';
 import {UsersFacade} from '../../../../store/users/users.facade';
 import {TicketsFacade} from '../../store/facades/tickets.facade';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {filter, map, skipWhile, switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-details-container',
@@ -27,6 +27,7 @@ export class TicketDetailsContainerComponent implements OnInit {
       map(params => +params.id),
       tap(id => this.ticketsFacade.loadTicket(id)),
       switchMap(id => this.ticketsFacade.getTicketWithUser(id)),
+      skipWhile(t => !t),
       tap(ticket => this.usersFacade.getUserById(ticket.assigneeId))
     );
   }

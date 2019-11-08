@@ -1,6 +1,7 @@
 import * as fromTickets from './tickets.reducer';
 import {Action, createFeatureSelector, createSelector} from '@ngrx/store';
-
+import * as fromUsers from '../../../../store/index';
+import {Ticket} from '../../models/ticket';
 
 
 // Export reducer in an AOT compatible way
@@ -26,3 +27,10 @@ export const selectAllOrFilteredTickets = createSelector(
 );
 
 export const selectTicketById = (id: number) => createSelector(ticketsFeatureStateSelector, fromTickets.selectTicketById(id));
+
+export const selectTicketWithUserById = (id: number) =>
+    createSelector(
+        selectTicketById(id),
+        fromUsers.selectUserEntities,
+        (ticket, users) => (ticket ? {...ticket, user: users[ticket.assigneeId] } as Ticket : undefined)
+    );

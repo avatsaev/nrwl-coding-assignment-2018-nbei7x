@@ -18,6 +18,7 @@ export const selectUsersState = createFeatureSelector<State, fromUsers.State>('u
 
 export const {
   selectAll: selectAllUsers,
+  selectEntities: selectUserEntities
 } = fromUsers.adapter.getSelectors(selectUsersState);
 
 
